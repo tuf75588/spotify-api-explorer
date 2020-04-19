@@ -9,3 +9,8 @@
 - [ ] Declaritive routing with `react-router-dom`
 - [ ] allow users to see the current song they are playing within the app
 - [ ] More goals added as app continues in development
+
+## Todo 4/19/2020
+
+- [ ] begin work on theming context for application
+- [ ] configure some global styles for the application
