@@ -1,9 +1,11 @@
 import React from 'react';
-import { useTheme } from 'emotion-theming';
+import { IsolatedContainer, PrimaryLoginButton } from './shared/pattern';
 function App() {
-  const theme = useTheme();
-  console.log(theme);
-  return <div>this is the start of something cool!</div>;
+  return (
+    <IsolatedContainer>
+      <PrimaryLoginButton>login with spotify</PrimaryLoginButton>
+    </IsolatedContainer>
+  );
 }
 
 export default App;

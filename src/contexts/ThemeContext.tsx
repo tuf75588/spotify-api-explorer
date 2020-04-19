@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ThemeProvider } from 'emotion-theming';
 
-const theme = {
+const theme: any = {
   common: {
     borderBottom: { borderBottom: '1px solid #eee' },
   },
@@ -15,4 +15,4 @@ const theme = {
   },
 };
 
-export default (props: object) => <ThemeProvider {...props} theme={theme} />;
+export default (props: any) => <ThemeProvider {...props} theme={theme} />;
