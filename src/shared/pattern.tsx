@@ -37,4 +37,11 @@ const PrimaryLoginButton = styled(Button)({
   cursor: 'pointer',
 });
 
-export { PrimaryLoginButton };
+type Loading = {
+  children: React.ReactNode;
+};
+const LoadingMessagePage = ({ children }: Loading) => {
+  return <IsolatedContainer>{children}</IsolatedContainer>;
+};
+
+export { PrimaryLoginButton, LoadingMessagePage };

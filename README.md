@@ -13,4 +13,10 @@
 ## Todo 4/19/2020
 
 - [x] begin work on theming context for application
-- [ ] configure some global styles for the application
+- [x] configure some global styles for the application
+
+
+## Todo 4/20/2020
+
+- [ ] configure some intial routes
+- [ ] continue work on api-client provider once login is successful
