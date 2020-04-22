@@ -10,7 +10,6 @@ export const ApiProviderContext = Provider;
 export const ApiConsumerContext = Consumer;
 const history = createBrowserHistory();
 const BASE_URL = 'https://accounts.spotify.com/authorize';
-
 function SpotifyClientProvider(props: any) {
   // let history = useHistory();
   const [user, setUser] = React.useState(() => {
