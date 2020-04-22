@@ -34,7 +34,7 @@ function SpotifyClientProvider(props: any) {
         history.push('/');
       }
     });
-
+    console.log(window.location.hash);
     return () => {
       unlisten();
     };
@@ -43,10 +43,10 @@ function SpotifyClientProvider(props: any) {
   const login = async () => {
     // here we will make the call to spotify
     const qs = `?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=token`;
-    const data = await client(`${BASE_URL}${qs}`).catch((error) => {
-      setError('Oh no, there was an error!');
-    });
-    console.log(data);
+    // const data = await client(`${BASE_URL}${qs}`).catch((error) => {
+    //   setError('Oh no, there was an error!');
+    // });
+    window.location.assign(`${BASE_URL}${qs}`);
   };
 
   return user ? (
