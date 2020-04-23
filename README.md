@@ -10,13 +10,9 @@
 - [ ] allow users to see the current song they are playing within the app
 - [ ] More goals added as app continues in development
 
-## Todo 4/19/2020
 
-- [x] begin work on theming context for application
-- [x] configure some global styles for the application
+## TODO 4/23
 
-
-## Todo 4/20/2020
-
-- [ ] configure some intial routes
-- [ ] continue work on api-client provider once login is successful
+- [ ] Get Access Token from hash in URL (response from spotify)
+- [ ] work on flow of storing token in localStorage
+- [ ] make sure refresh token can be secured when access_token expires
