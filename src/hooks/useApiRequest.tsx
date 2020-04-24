@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-function useApiRequest<Type>(url, options?: Type) {
-  const [data, setData] = useState<any>([]);
+function useApiRequest(url, options = {}) {
+  const [data, setData] = useState<Array<object>>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   useEffect(() => {
@@ -9,10 +9,10 @@ function useApiRequest<Type>(url, options?: Type) {
     fetch(url)
       .then((response) => {
         if (response.ok) {
-          return response.text();
+          return response.json();
         }
       })
-      .then((data) => {
+      .then(({ data }) => {
         setData(data);
         setLoading(false);
       })
@@ -20,8 +20,16 @@ function useApiRequest<Type>(url, options?: Type) {
         setError(error.message);
         setLoading(false);
       });
-  }, [url, options]);
+  }, [url, options, setData]);
   return { loading, data, error };
 }
 
-export { useApiRequest };
+function useToggle() {
+  const [onState, setOnState] = useState(false);
+  const toggle = setOnState(() => !onState);
+  const setOn = setOnState(true);
+  const setOff = setOnState(false);
+  return { onState, toggle, setOn, setOff };
+}
+
+export { useApiRequest, useToggle };

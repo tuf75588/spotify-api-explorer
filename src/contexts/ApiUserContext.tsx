@@ -21,35 +21,36 @@ const scopes = [
 const BASE_URL = 'https://accounts.spotify.com/authorize';
 function SpotifyClientProvider(props: any) {
   const [client, setClient] = React.useState(() => {
-    if (props.user) {
-      return props.user;
+    if (props.client) {
+      return props.client;
     }
     const token = localStorage.getItem('spotify_token');
     if (token) {
-      console.log('running!');
-      return getClient(token);
+      // console.log('running!');
+      // return getClient(token);
     }
   });
   const [error, setError] = React.useState<null | string>(null);
 
+  React.useEffect(() => {
+    const hash = window.location.hash;
+    if (!!hash) {
+      const value = window.location.hash.substr(1).split('&')[0];
+      const token = value.slice(value.indexOf('=') + 1);
+      console.log(token);
+    }
+  }, []);
   function getClient(token) {
-    console.log({ token }, 'testing this fake token');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
   }
 
   function login() {
-    const token = window.localStorage.setItem(
-      'spotify_token',
-      'spotify-token take 2'
-    );
-    setClient(getClient(token));
+    const qs = `?client_id=${process.env.REACT_APP_CLIENT_ID}&response_type=token&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}`;
+    window.location.assign(`${BASE_URL}${qs}`);
   }
 
-  React.useEffect(() => {
-    // first I want to check to see if there's an access token in localStorage
-    if (!client) {
-      history.push('/');
-    }
-  });
   // this function is responsible for extracting a hash value from our callback route
   return client ? (
     <Provider value={client}>{props.children}</Provider>
