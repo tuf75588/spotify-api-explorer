@@ -10,6 +10,14 @@ const APIClientContext = React.createContext({});
 const { Provider, Consumer } = APIClientContext;
 
 const history = createBrowserHistory();
+
+const scopes = [
+  'user-read-currently-playing',
+  'user-read-playback-state',
+  'user-read-recently-played',
+  'user-modify-playback-state',
+];
+
 const BASE_URL = 'https://accounts.spotify.com/authorize';
 function SpotifyClientProvider(props: any) {
   const [client, setClient] = React.useState(() => {
@@ -18,22 +26,30 @@ function SpotifyClientProvider(props: any) {
     }
     const token = localStorage.getItem('spotify_token');
     if (token) {
-      setClient(token);
+      console.log('running!');
+      return getClient(token);
     }
   });
   const [error, setError] = React.useState<null | string>(null);
 
-  const login = () => {
-    window.location.assign(
-      `${BASE_URL}?client_id=${process.env.REACT_APP_CLIENT_ID}&response_type=token&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}`
+  function getClient(token) {
+    console.log({ token }, 'testing this fake token');
+  }
+
+  function login() {
+    const token = window.localStorage.setItem(
+      'spotify_token',
+      'spotify-token take 2'
     );
-  };
+    setClient(getClient(token));
+  }
+
   React.useEffect(() => {
-    if (!!window.location.hash) {
-      setClient('authorized');
-      history.push('/user/authorized');
+    // first I want to check to see if there's an access token in localStorage
+    if (!client) {
+      history.push('/');
     }
-  }, []);
+  });
   // this function is responsible for extracting a hash value from our callback route
   return client ? (
     <Provider value={client}>{props.children}</Provider>
@@ -54,7 +70,7 @@ function SpotifyClientProvider(props: any) {
           </PrimaryLoginButton>
         )}
       </div>
-      <p style={{ textAlign: 'center', marginTop: '2em' }}></p>
+      <p style={{ textAlign: 'center', marginTop: '2em' }}>{client}</p>
     </div>
   );
 }
