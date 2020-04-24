@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 function useApiRequest<Type>(url, options?: Type) {
   const [data, setData] = useState<any>([]);
@@ -14,6 +14,10 @@ function useApiRequest<Type>(url, options?: Type) {
       })
       .then((data) => {
         setData(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
         setLoading(false);
       });
   }, [url, options]);
