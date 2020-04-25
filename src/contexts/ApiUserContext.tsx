@@ -4,11 +4,9 @@ import { createBrowserHistory } from 'history';
 import { jsx } from '@emotion/core';
 import { PrimaryLoginButton } from '../shared/pattern';
 
-import { useSafeSetState } from '../hooks/useSetState';
-import { useApiRequest } from '../hooks/useApiRequest';
 const APIClientContext = React.createContext({});
 const { Provider, Consumer } = APIClientContext;
-
+let history = createBrowserHistory();
 const scopes = [
   'user-read-currently-playing',
   'user-read-playback-state',
@@ -18,23 +16,35 @@ const scopes = [
 
 const BASE_URL = 'https://accounts.spotify.com/authorize';
 function SpotifyClientProvider(props: any) {
-  const [client, setClient] = React.useState('');
+  const [client, setClient] = React.useState<any>(() => {
+    const token = localStorage.getItem('spotify-token');
+    if (token) {
+      // if there's an existing token
+      return getClient(token);
+    }
+  });
   const [error, setError] = React.useState<null | string>(null);
 
   React.useEffect(() => {
-    // is there a token in localstorage?
-    const params: any = getHashParams();
-    if (params && params.access_token) {
-      const { access_token, expires_in, token_type } = params;
-      login(access_token);
+    const token = window.localStorage.getItem('spotify-token');
+    if (token) {
+      // redirect the user somewhere
+      history.push('/user/loggedin');
+    } else {
+      const params: any = getHashParams();
+      getClient(params.access_token);
     }
-
-    // const hash = window.location.hash;
-    // const value = hash?.substr(1).split('&')[0];
-    // const token = value.slice(value.indexOf('=') + 1);
-    // window.localStorage.setItem('spotify-token', token);
   }, []);
+  // exchanges client information for an access token for web api access.
+  const handShake = () => {
+    const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+    const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+    const queryString = `?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&scope=${scopes}`;
+    const url = `${BASE_URL}${queryString}`;
+    window.location.assign(url);
+  };
 
+  // s/o to stackoverflow for this awesome function to retrieve a hash value!
   function getHashParams() {
     const hashParams = {};
     const r = /([^&;=]+)=?([^&;]*)/g;
@@ -47,21 +57,20 @@ function SpotifyClientProvider(props: any) {
     return hashParams;
   }
 
-  async function login(token: string) {
-    const request = await fetch('https://api.spotify.com/v1/me', {
+  // function to log user into the spotify API
+  async function getClient(token) {
+    window.localStorage.setItem('spotify-token', token);
+    const request = await fetch(`https://api.spotify.com/v1/me`, {
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    const data = await request.json();
-    console.log(data);
-  }
-  function getToken() {
-    const qs = `?client_id=${process.env.REACT_APP_CLIENT_ID}&response_type=token&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}`;
-    window.location.assign(`${BASE_URL}${qs}`);
+    const response = await request.json();
+    setClient(response);
+    history.push(`/user/${response.id}`);
   }
 
-  // this function is responsible for extracting a hash value from our callback route
   return client ? (
     <Provider value={client}>{props.children}</Provider>
   ) : (
@@ -76,7 +85,7 @@ function SpotifyClientProvider(props: any) {
         {error ? (
           <pre>{JSON.stringify(error, null, 2)}</pre>
         ) : (
-          <PrimaryLoginButton onClick={getToken}>
+          <PrimaryLoginButton onClick={handShake}>
             Login with Spotify
           </PrimaryLoginButton>
         )}
