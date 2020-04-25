@@ -9,8 +9,6 @@ import { useApiRequest } from '../hooks/useApiRequest';
 const APIClientContext = React.createContext({});
 const { Provider, Consumer } = APIClientContext;
 
-const history = createBrowserHistory();
-
 const scopes = [
   'user-read-currently-playing',
   'user-read-playback-state',
@@ -20,33 +18,45 @@ const scopes = [
 
 const BASE_URL = 'https://accounts.spotify.com/authorize';
 function SpotifyClientProvider(props: any) {
-  const [client, setClient] = React.useState(() => {
-    if (props.client) {
-      return props.client;
-    }
-    const token = localStorage.getItem('spotify_token');
-    if (token) {
-      // console.log('running!');
-      // return getClient(token);
-    }
-  });
+  const [client, setClient] = React.useState('');
   const [error, setError] = React.useState<null | string>(null);
 
   React.useEffect(() => {
-    const hash = window.location.hash;
-    if (!!hash) {
-      const value = window.location.hash.substr(1).split('&')[0];
-      const token = value.slice(value.indexOf('=') + 1);
-      console.log(token);
+    // is there a token in localstorage?
+    const params: any = getHashParams();
+    if (params && params.access_token) {
+      const { access_token, expires_in, token_type } = params;
+      login(access_token);
     }
+
+    // const hash = window.location.hash;
+    // const value = hash?.substr(1).split('&')[0];
+    // const token = value.slice(value.indexOf('=') + 1);
+    // window.localStorage.setItem('spotify-token', token);
   }, []);
-  function getClient(token) {
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
+
+  function getHashParams() {
+    const hashParams = {};
+    const r = /([^&;=]+)=?([^&;]*)/g;
+    const q = window.location.hash.substring(1);
+    let e = r.exec(q);
+    while (e) {
+      hashParams[e[1]] = decodeURIComponent(e[2]);
+      e = r.exec(q);
+    }
+    return hashParams;
   }
 
-  function login() {
+  async function login(token: string) {
+    const request = await fetch('https://api.spotify.com/v1/me', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await request.json();
+    console.log(data);
+  }
+  function getToken() {
     const qs = `?client_id=${process.env.REACT_APP_CLIENT_ID}&response_type=token&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}`;
     window.location.assign(`${BASE_URL}${qs}`);
   }
@@ -66,7 +76,7 @@ function SpotifyClientProvider(props: any) {
         {error ? (
           <pre>{JSON.stringify(error, null, 2)}</pre>
         ) : (
-          <PrimaryLoginButton onClick={login}>
+          <PrimaryLoginButton onClick={getToken}>
             Login with Spotify
           </PrimaryLoginButton>
         )}
