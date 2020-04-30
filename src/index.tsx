@@ -10,7 +10,6 @@ import { LoadingMessagePage } from './shared/pattern';
 const User = React.lazy(() => import('./screens/user'));
 
 function App(props: any) {
-  console.log(props);
   return (
     <React.StrictMode>
       <SpotifyContext.Provider>

@@ -18,23 +18,23 @@ const BASE_URL = 'https://accounts.spotify.com/authorize';
 function SpotifyClientProvider(props: any) {
   const [client, setClient] = React.useState<any>(() => {
     const token = localStorage.getItem('spotify-token');
-    if (token) {
+    if (!token) {
       // if there's an existing token
       return getClient(token);
     }
   });
   const [error, setError] = React.useState<null | string>(null);
 
+  const token = window.localStorage.getItem('spotify-token');
   React.useEffect(() => {
-    const token = window.localStorage.getItem('spotify-token');
     if (token) {
       // redirect the user somewhere
-      history.push('/user/loggedin');
+      console.log('logging in!');
     } else {
       const params: any = getHashParams();
       getClient(params.access_token);
     }
-  }, []);
+  }, [token]);
   // exchanges client information for an access token for web api access.
   const handShake = () => {
     const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
