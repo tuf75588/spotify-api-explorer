@@ -32,4 +32,8 @@ function useToggle() {
   return { onState, toggle, setOn, setOff };
 }
 
+function useLocalStorage() {
+  const [item, setItem] = useState(null);
+}
+
 export { useApiRequest, useToggle };
