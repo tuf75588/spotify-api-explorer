@@ -8,10 +8,6 @@ const APIClientContext = React.createContext({});
 const {Provider, Consumer} = APIClientContext;
 let history = createBrowserHistory();
 
-type Client = {
-  Authorization: string;
-};
-
 const scopes = [
   'user-read-currently-playing',
   'user-read-playback-state',
@@ -21,31 +17,26 @@ const scopes = [
 const WEB_API_ENDPOINT = 'https://api.spotify.com/v1/me';
 const BASE_URL = 'https://accounts.spotify.com/authorize';
 function SpotifyClientProvider(props: any) {
-  const [client, setClient] = React.useState<any>(() => {
-    if (props.client) {
-      return props.client;
-    }
-    const token = window.localStorage.getItem('spotify-token');
-    if (token) {
-      return getClient(token);
-    }
-  });
+  const [client, setClient] = React.useState<string | null>('');
+
   const [error, setError] = React.useState<null | string>(null);
 
   // in this effect, we will grab the hash value from the window that came back from our request
   React.useEffect(() => {
-    // check if there is a hash value present
-
-    if (window.location.hash) {
-      const hash: any = getHashParams();
-      // if there is no token in localStorage && hash is truthy..let's continue
-      if (hash.access_token && !client) {
-        window.localStorage.setItem('spotify-token', hash.access_token);
-        getClient(hash.access_token);
-        history.push('/');
-      }
+    const hashUrl: any = window.location.hash && getHashParams();
+    if (hashUrl) {
+      console.log('this code is executing!');
+      window.localStorage.setItem('spotify-token', hashUrl.access_token);
+      history.push('/');
     }
   });
+
+  React.useEffect(() => {
+    const userToken = window.localStorage.getItem('spotify-token');
+    if (userToken) {
+      setClient(userToken);
+    }
+  }, []);
 
   // exchanges client information for an access token for web api access.
   async function handShake() {
@@ -56,9 +47,9 @@ function SpotifyClientProvider(props: any) {
       const queryString = `?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&scope=${scopes}&show_dialog=true`;
       const url = `${BASE_URL}${queryString}`;
       window.location.assign(url);
-    }
-    if (token) {
-      setClient(getClient(token));
+    } else {
+      setClient(token);
+      getClient();
     }
   }
 
@@ -74,19 +65,9 @@ function SpotifyClientProvider(props: any) {
     }
     return hashParams;
   }
-  async function getClient(token: string) {
-    try {
-      const request = await fetch(`${WEB_API_ENDPOINT}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await request.json();
-      return Object.assign(data, {login, logout});
-    } catch (error) {
-      console.log(error.message);
-      setError('Oh no, there was an error!');
-    }
+
+  function getClient() {
+    return Object.assign(client, {login, logout});
   }
 
   async function login() {
@@ -94,13 +75,10 @@ function SpotifyClientProvider(props: any) {
     await handShake();
   }
   function logout() {
-    // remove token from localstorage
-    // set client state to null
-    // redirect user back to login view
-    console.log('you clicked logout!');
     window.localStorage.removeItem('spotify-token');
     setClient(null);
   }
+
   return client ? (
     <Provider value={client}>{props.children}</Provider>
   ) : (
@@ -120,7 +98,6 @@ function SpotifyClientProvider(props: any) {
           </PrimaryLoginButton>
         )}
       </div>
-      <p style={{textAlign: 'center', marginTop: '2em'}}>{client}</p>
     </div>
   );
 }

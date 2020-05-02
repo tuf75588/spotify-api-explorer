@@ -20,13 +20,7 @@ type User = {
 function Home(props) {
   const [user, setUser] = useState<any>('');
   const spotify = useContext<any>(SpotifyContext);
-  useEffect(() => {
-    spotify.then((res) => {
-      if (res) {
-        setUser(res);
-      }
-    });
-  }, [spotify, user]);
+  console.log(spotify);
   return (
     <div>
       <Logo />
