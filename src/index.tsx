@@ -7,7 +7,6 @@ import GlobalStyles from './shared/global-styles';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import {LoadingMessagePage} from './shared/pattern';
-const User = React.lazy(() => import('./screens/user'));
 const Home = React.lazy(() => import('./screens/home'));
 function App(props: any) {
   return (

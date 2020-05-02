@@ -15,17 +15,38 @@ const LogoutBtn = styled.button`
 
 type User = {
   id?: string;
+  country?: string;
+  followers?: number;
 };
 
 function Home(props) {
-  const [user, setUser] = useState<any>('');
-  const spotify = useContext<any>(SpotifyContext);
-  console.log(spotify);
+  const [user, setUser] = useState<User>({});
+  const token = useContext<any>(SpotifyContext);
+
+  useEffect(() => {
+    const connectToWebAPI = async () => {
+      const WEB_API_ENDPOINT = 'https://api.spotify.com/v1/me';
+
+      const request = await fetch(WEB_API_ENDPOINT, {
+        headers: {Authorization: `Bearer ${token}`},
+      });
+      if (request.status === 401 || !request.ok) {
+        // our token has expired
+        console.error('FETCH A NEW TOKEN!');
+        throw new Error(request.statusText);
+      }
+      const response = await request.json();
+      setUser(response);
+    };
+    connectToWebAPI();
+    // only run if our token changes
+  }, [setUser, token]);
+  if (!user) return <p style={{color: '#fff'}}>loading user information...</p>;
   return (
     <div>
-      <Logo />
-      <Heading>Welcome {user.id}</Heading>
-      <LogoutBtn onClick={user.logout}>Logout</LogoutBtn>
+      <Heading>
+        Welcome {user.id} {user.country}
+      </Heading>
     </div>
   );
 }

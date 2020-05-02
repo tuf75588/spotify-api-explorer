@@ -14,7 +14,6 @@ const scopes = [
   'user-read-recently-played',
   'user-modify-playback-state',
 ];
-const WEB_API_ENDPOINT = 'https://api.spotify.com/v1/me';
 const BASE_URL = 'https://accounts.spotify.com/authorize';
 function SpotifyClientProvider(props: any) {
   const [client, setClient] = React.useState<string | null>('');
@@ -25,7 +24,6 @@ function SpotifyClientProvider(props: any) {
   React.useEffect(() => {
     const hashUrl: any = window.location.hash && getHashParams();
     if (hashUrl) {
-      console.log('this code is executing!');
       window.localStorage.setItem('spotify-token', hashUrl.access_token);
       history.push('/');
     }
@@ -72,7 +70,10 @@ function SpotifyClientProvider(props: any) {
 
   async function login() {
     // this function will set user state and forward our home UI
-    await handShake();
+    await handShake().catch((error) => {
+      console.log(error);
+      setError(error);
+    });
   }
   function logout() {
     window.localStorage.removeItem('spotify-token');
