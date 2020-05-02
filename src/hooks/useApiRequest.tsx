@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 function useApiRequest(url, options = {}) {
   const [data, setData] = useState<Array<object>>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
   useEffect(() => {
     setLoading(true);
     fetch(url)
