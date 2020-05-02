@@ -35,9 +35,7 @@ function SpotifyClientProvider(props: any) {
   // in this effect, we will grab the hash value from the window that came back from our request
   React.useEffect(() => {
     // check if there is a hash value present
-    if (!client) {
-      history.push('/');
-    }
+
     if (window.location.hash) {
       const hash: any = getHashParams();
       // if there is no token in localStorage && hash is truthy..let's continue
@@ -93,12 +91,15 @@ function SpotifyClientProvider(props: any) {
 
   async function login() {
     // this function will set user state and forward our home UI
-    handShake();
+    await handShake();
   }
   function logout() {
     // remove token from localstorage
     // set client state to null
     // redirect user back to login view
+    console.log('you clicked logout!');
+    window.localStorage.removeItem('spotify-token');
+    setClient(null);
   }
   return client ? (
     <Provider value={client}>{props.children}</Provider>
@@ -124,4 +125,8 @@ function SpotifyClientProvider(props: any) {
   );
 }
 
-export {SpotifyClientProvider as Provider, Consumer, APIClientContext};
+export {
+  SpotifyClientProvider as Provider,
+  Consumer,
+  APIClientContext as Context,
+};
