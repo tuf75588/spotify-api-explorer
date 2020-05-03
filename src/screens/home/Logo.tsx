@@ -2,7 +2,7 @@ import React from 'react';
 
 function Logo() {
   return (
-    <svg viewBox="0 0 1134 340" className="spotify-logo--text">
+    <svg viewBox="0 0 1134 340" className="spotify-logo--text hero">
       <title>Spotify</title>
       <path
         fill="currentColor"

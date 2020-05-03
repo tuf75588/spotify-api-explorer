@@ -1,16 +1,14 @@
+/** @jsx jsx */
 import React, {useContext, useState, useEffect} from 'react';
 import {Context as SpotifyContext} from '../../contexts/ApiUserContext';
 import Logo from './Logo';
 import styled from '@emotion/styled';
-
+import {jsx} from '@emotion/core';
+import PlaylistGrid from '../components/Playlist';
 const Heading = styled.h1`
   color: #fff;
   font-weight: 300;
-`;
-
-const LogoutBtn = styled.button`
-  color: #000;
-  padding: 2em;
+  text-align: center;
 `;
 
 type User = {
@@ -33,7 +31,8 @@ function Home(props) {
       if (request.status === 401 || !request.ok) {
         // our token has expired
         console.error('FETCH A NEW TOKEN!');
-        throw new Error(request.statusText);
+        window.localStorage.removeItem('spotify-token');
+        window.location.reload();
       }
       const response = await request.json();
       setUser(response);
@@ -42,11 +41,21 @@ function Home(props) {
     // only run if our token changes
   }, [setUser, token]);
   if (!user) return <p style={{color: '#fff'}}>loading user information...</p>;
+
   return (
     <div>
-      <Heading>
-        Welcome {user.id} {user.country}
-      </Heading>
+      <Logo />
+      <Heading>Welcome {user.id}!</Heading>
+      <div
+        css={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          border: '1px solid white',
+          color: 'white',
+        }}
+      >
+        <PlaylistGrid />
+      </div>
     </div>
   );
 }

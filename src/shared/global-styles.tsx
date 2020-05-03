@@ -16,6 +16,10 @@ function GlobalStyles() {
           }
           svg {
             color: #fff;
+            width: 50vw;
+          }
+          .hero {
+            padding-top: 1em;
           }
         `}
       />
