@@ -8,6 +8,9 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import {LoadingMessagePage} from './shared/pattern';
 const Home = React.lazy(() => import('./screens/home'));
+const Listing = React.lazy(() =>
+  import('./screens/components/PlaylistListing')
+);
 function App(props: any) {
   return (
     <React.StrictMode>
@@ -21,6 +24,7 @@ function App(props: any) {
           >
             <Router>
               <Route path="/" exact component={Home} />
+              <Route path="/:id" exact component={Listing} />
             </Router>
           </React.Suspense>
         </ThemeContext>

@@ -1,10 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
 import styled from '@emotion/styled';
 import {Context as SpotifyContext} from '../../contexts/ApiUserContext';
 const StyledItem = styled.div`
   text-align: center;
   padding: 0.5em;
   border: 0.5px solid rgba(0, 0, 0, 0.3);
+  cursor: pointer;
 `;
 
 const GridContainer = styled.main`
@@ -49,26 +51,35 @@ function PlaylistGrid() {
     <GridContainer>
       {playlists.map(
         (item: {
+          id: string;
           name: string;
           description: string;
           images: Array<{url: string}>;
         }) => {
           const playlistImg = item.images.length ? item.images[0].url : '';
-          const description = item.description ?? 'No description available';
-          console.log(playlistImg);
+
           return (
-            <StyledItem>
-              <div>
-                {playlistImg ? (
-                  <Img src={playlistImg} alt="playlist cover art" />
-                ) : (
-                  <p style={{paddingBottom: '2em'}}>
-                    <span role="img" aria-label="emoji expression">
-                      No album art available at this time 😥
-                    </span>
-                  </p>
-                )}
-              </div>
+            <StyledItem key={item.id}>
+              <Link
+                to={{
+                  pathname: `/${item.id}`,
+                  state: {
+                    ...item,
+                  },
+                }}
+              >
+                <div>
+                  {playlistImg ? (
+                    <Img src={playlistImg} alt="playlist cover art" />
+                  ) : (
+                    <p style={{paddingBottom: '2em'}}>
+                      <span role="img" aria-label="emoji expression">
+                        No album art available at this time 😥
+                      </span>
+                    </p>
+                  )}
+                </div>
+              </Link>
               <p>{item.name}</p>
             </StyledItem>
           );

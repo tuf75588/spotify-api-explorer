@@ -18,6 +18,10 @@ function GlobalStyles() {
             margin: 0;
             padding: 0;
           }
+          a {
+            text-decoration: none;
+            color: inherit;
+          }
           svg {
             color: #fff;
             width: 50vw;
