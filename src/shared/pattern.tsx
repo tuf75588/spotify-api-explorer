@@ -1,9 +1,9 @@
 /* @jsx jsx */
 import React from 'react';
 import styled from '@emotion/styled/macro';
-import { jsx } from '@emotion/core';
-import { Link } from 'react-router-dom';
-export const IsolatedContainer = (props: object) => {
+import {jsx} from '@emotion/core';
+import {Link} from 'react-router-dom';
+export const IsolatedContainer = (props: any) => {
   return (
     <div
       {...props}
@@ -11,6 +11,7 @@ export const IsolatedContainer = (props: object) => {
         marginTop: 300,
         display: 'flex',
         justifyContent: 'center',
+        color: '#f1f1f1',
       }}
     />
   );
@@ -40,8 +41,8 @@ const PrimaryLoginButton = styled(Button)({
 type Loading = {
   children: React.ReactNode;
 };
-const LoadingMessagePage = ({ children }: Loading) => {
+const LoadingMessagePage = ({children}: Loading) => {
   return <IsolatedContainer>{children}</IsolatedContainer>;
 };
 
-export { PrimaryLoginButton, LoadingMessagePage };
+export {PrimaryLoginButton, LoadingMessagePage};

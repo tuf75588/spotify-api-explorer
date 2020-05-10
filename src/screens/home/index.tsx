@@ -4,7 +4,7 @@ import {Context as SpotifyContext} from '../../contexts/ApiUserContext';
 import Logo from './Logo';
 import styled from '@emotion/styled';
 import {jsx} from '@emotion/core';
-import PlaylistGrid from '../components/Playlist';
+import PlaylistGrid from '../components/PlaylistGrid';
 const Heading = styled.h1`
   color: #fff;
   font-weight: 300;
@@ -17,7 +17,7 @@ type User = {
   followers?: number;
 };
 
-function Home(props) {
+function Home() {
   const [user, setUser] = useState<User>({});
   const token = useContext<any>(SpotifyContext);
 
