@@ -50,7 +50,6 @@ function Home(props) {
         css={{
           maxWidth: '1200px',
           margin: '0 auto',
-          border: '1px solid white',
           color: 'white',
         }}
       >

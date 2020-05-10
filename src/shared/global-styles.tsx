@@ -14,6 +14,10 @@ function GlobalStyles() {
           html {
             background-color: #121212;
           }
+          p {
+            margin: 0;
+            padding: 0;
+          }
           svg {
             color: #fff;
             width: 50vw;
