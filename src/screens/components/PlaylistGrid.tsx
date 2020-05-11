@@ -7,6 +7,8 @@ const StyledItem = styled.div`
   padding: 0.5em;
   border: 0.5px solid rgba(0, 0, 0, 0.3);
   cursor: pointer;
+  background-color: #282828;
+  border-radius: 5px;
 `;
 
 const GridContainer = styled.main`
@@ -14,7 +16,7 @@ const GridContainer = styled.main`
   gap: 10px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  background-color: #2c3134;
+
   background-clip: padding-box;
 `;
 
