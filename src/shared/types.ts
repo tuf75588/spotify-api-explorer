@@ -1,4 +1,6 @@
 export type Image = {
-  url: string;
-  height?: number;
+  images: {
+    src?: string;
+    url?: string;
+  };
 };
