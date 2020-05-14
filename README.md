@@ -10,8 +10,3 @@
 - [ ] allow users to see the current song they are playing within the app
 - [ ] More goals added as app continues in development
 
-## TODO 4/23
-
-- [x] Get Access Token from hash in URL (response from spotify)
-- [x] work on flow of storing token in localStorage
-- [ ] make sure refresh token can be secured when access_token expires
