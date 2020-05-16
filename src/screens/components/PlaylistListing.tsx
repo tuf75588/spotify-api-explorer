@@ -2,8 +2,6 @@
 import {useState, useEffect} from 'react';
 import {useLocation, useHistory} from 'react-router-dom';
 import {jsx} from '@emotion/core';
-import {IsolatedContainer} from '../../shared/pattern';
-import {Image} from '../../shared/types';
 import TrackListing from './TrackListing';
 const Hero = (props) => (
   <div

@@ -1,8 +1,8 @@
 /* @jsx jsx */
 import React from 'react';
 import styled from '@emotion/styled/macro';
+// eslint-disable-next-line
 import {jsx} from '@emotion/core';
-import {Link} from 'react-router-dom';
 export const IsolatedContainer = (props: any) => {
   return (
     <div

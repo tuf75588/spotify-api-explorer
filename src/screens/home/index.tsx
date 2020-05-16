@@ -20,7 +20,6 @@ type User = {
 function Home() {
   const [user, setUser] = useState<User>({});
   const token = useContext<any>(SpotifyContext);
-
   useEffect(() => {
     const connectToWebAPI = async () => {
       const WEB_API_ENDPOINT = 'https://api.spotify.com/v1/me';
@@ -45,7 +44,7 @@ function Home() {
   return (
     <div>
       <Logo />
-      <Heading>Welcome {user.id}!</Heading>
+      <Heading>Welcome {user.id}! </Heading>
       <div
         css={{
           maxWidth: '1200px',
