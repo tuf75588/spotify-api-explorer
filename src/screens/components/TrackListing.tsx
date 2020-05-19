@@ -19,6 +19,16 @@ const StyledListItem = styled.li`
   display: flex;
   justify-content: space-between;
   padding: 1em;
+  width: 100%;
+  p {
+    width: 100%;
+  }
+  .artist-name {
+    text-align: center;
+  }
+  .album {
+    text-align: right;
+  }
 `;
 
 const ListContainer = styled.ul`
@@ -26,6 +36,7 @@ const ListContainer = styled.ul`
 `;
 
 function TopToolbar() {
+  console.log('im re-rendering but nothing has changed!');
   return (
     <nav>
       <ul
@@ -52,15 +63,23 @@ function TrackListing({data}) {
     <StyledContainer>
       <ListContainer>
         <Toolbar />
-        {data.map(({track: {name, id}}) => {
-          return (
-            <StyledListItem key={id}>
-              <div>{name}</div>
-              <div>{name}</div>
-              <div>{name}</div>
-            </StyledListItem>
-          );
-        })}
+        {data.map(
+          ({
+            track: {
+              name,
+              id,
+              album: {name: albumName},
+            },
+          }) => {
+            return (
+              <StyledListItem key={id}>
+                <p>{name.length > 35 ? name.slice(0, 10) + '...' : name}</p>
+                <p className="artist-name">artist name</p>
+                <p className="album">{albumName}</p>
+              </StyledListItem>
+            );
+          }
+        )}
       </ListContainer>
     </StyledContainer>
   );
