@@ -69,12 +69,13 @@ function TrackListing({data}) {
               name,
               id,
               album: {name: albumName},
+              artists,
             },
           }) => {
             return (
               <StyledListItem key={id}>
                 <p>{name.length > 35 ? name.slice(0, 10) + '...' : name}</p>
-                <p className="artist-name">artist name</p>
+                <p className="artist-name">{artists[0].name}</p>
                 <p className="album">{albumName}</p>
               </StyledListItem>
             );

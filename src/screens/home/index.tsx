@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, {useContext, useState, useEffect} from 'react';
+import {useContext, useState, useEffect} from 'react';
 import {Context as SpotifyContext} from '../../contexts/ApiUserContext';
 import Logo from './Logo';
 import styled from '@emotion/styled';
